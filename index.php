@@ -1,73 +1,69 @@
 <?php
-	//error_reporting(0);
-    session_start();
-           
-	$email= $_POST['email'];
-
-	$password=$_POST['password'];
-
-	$submit=$_POST['submit'];
-
-	if($submit)
-	{
-		if($email=="" || $password=="")
-        {
-			$error = "<font color='red'> name or id cannot be empty</font>";
-        }
-		else              
+		session_start();
+		$email= $_POST['email'];
+		$password=$_POST['password'];
+		$submit=$_POST['submit'];
+			
+		if($submit)
 		{
-			include('connect_to_database.php');
+                if($email=="" || $password=="")
+            	{
+					$error = "<font color='red'> name or id cannot be empty</font>";
+				}
+                else              
+				{
+					include('connect_to_database.php');
 			
-			$sql="SELECT email,password From studentregistration";
-			$result=mysqli_query($conn, $sql);
-			while($row = $result->fetch_assoc())
-			{
-				$database_email = $row['email'];
-				$database_password = $row['password'];	
-				if (($email !== $database_email) and ($password !== $database_password))
-				{
-					echo "done";
-					//echo "<script>alert('login successfull')</script>";
-                  	$_SESSION['email']= $email;
-					$_SESSION['password']= $password;
-                	   
-					header("LOCATION:1.php");
+					$sql="SELECT email,password From adminlogin";
+					$result=mysqli_query($conn, $sql);
+					while($row = $result->fetch_assoc())
+					{
+						$database_email = $row['email'];
+						$database_password = $row['password'];
+						if(($email == $database_email) && ($password == $database_password))
+						{
+                  			$_SESSION['email']= $email;
+							$_SESSION['password']= $password;
+							header("LOCATION:admin_panel.php");
+						}
+						else
+						{
+							$error= "<font color='red'> no match found for name or id, please check the spelliing and try again!</font>";
+						}
+					}
 				}
-				else
-				{
-					$error= "<font color='red'> no match found for name or id, please check the spelliing and try again!</font>";
-
-				}
-			}
 		}
-	}
 ?>
-
-
 <html>
-	<head>
-		<title>Login Form</title>
-	</head>
-	<body background="img/login.jpg">
-		<center>
-		<h1>Welcome to E-voting System<br>
-			 Login</h1><br>
-	
-			<div color="blue" id="subsidebar2">
-			
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<form action="index.php" method="POST">
-				<?php echo "<h2>".$error."<h2>"; ?>
-				<br>
-			email:	<input type="text" name="email" /><br>
-			password:<input type="password" name="password" /><br>
-				<input type="submit" name="submit" value="Login" /><br>
-		</form>
-	    <a href="Register.php">register here</a><br>
+<head>
 
-		<a href="admin/index.php">Admin login</a>
-		<br><br><br><br><br><br><br><br>
-		<a  href="aboutus.php">About Us</a> </div>
-	</center>
-	</body>
+<title>Login Document</title>
+
+</head>
+
+<body  bgcolor="pink">
+
+<table width="793" height="60" border="1" align="center">
+
+<tr> 
+<h1><p align=center><font color="blue" size="7">Admin Login</font></p></h1>
+<form action="index.php" method="POST">
+
+<td width="245" height="28" valign=top"><font size="6" color="orange" style="bold">Admin </font><?php echo $error ?></td>
+
+<td width = "532" valign="top">
+<center>
+<font color="green" size="5">
+Email:  <input type="text" name="email" /><br><br><br>
+Password:<input type="password" name="password" /><br><br>
+<br>
+<input type="submit" name="submit" value="login" /></td>
+</tr></font></center>
+</form>
+     
+</table>
+<br><br><br><center>
+<a href="/CollegeVoting/index.php"><font color="red" size="6" align="center">Home </font></a>
+</center>
+</body>
 </html>
