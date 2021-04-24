@@ -1,4 +1,37 @@
 <?php
+function winner($result1 , $result2 , $result3)
+{
+	$result="";
+	$count=0;
+	$m=max($result1 , $result2 , $result3);
+	if($m==$result1)
+	{	if($count>0)
+		{
+			$result.=" , ";
+		}
+		$result.="Akash";
+		$count++;
+	}
+	if($m==$result2)
+	{
+		if($count>0)
+		{
+			$result.=" , ";
+		}
+		$result.="Rishikesh";
+		$count++;
+	}
+	if($m==$result3)
+	{
+		if($count>0)
+		{
+			$result.=" , ";
+		}
+		$result.="Jyoti";
+		$count++;
+	}
+	return $result;
+}
 include('connect_to_database.php');
 
 $sql = mysqli_query($conn,"SELECT Akash From candidate WHERE  Akash > 0");
@@ -11,6 +44,9 @@ $sql3= mysqli_query($conn,"SELECT Jyoti FROM candidate WHERE Jyoti > 0 ");
 $result3 = mysqli_num_rows($sql3);
 
 $total_Voters = $result1+$result2+$result3;
+echo "<marquee><h1>The Winner is ".winner($result1 , $result2 , $result3);
+$x=max($result1 , $result2 , $result3);
+echo "<br>Winner have  $x Votes.</h1></marquee>";
 
 //total registered voters
 $sql_registered_voters = mysqli_query($conn,"SELECT email FROM studentregistration ") or die(mysqli_error());
